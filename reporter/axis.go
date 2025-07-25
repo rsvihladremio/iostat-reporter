@@ -1,5 +1,7 @@
 package reporter
 
+import "math"
+
 // CalcScale returns the min, max, and evenly‐spaced interval (over splits)
 // across all provided float64 slices.  If data is flat, it expands max = min+1.
 func CalcScale(splits int, arrs ...[]float64) (min, max, interval float64) {
@@ -27,5 +29,8 @@ func CalcScale(splits int, arrs ...[]float64) (min, max, interval float64) {
 		max = min + 1
 	}
 	interval = (max - min) / float64(splits)
+	min = math.Round(min*100) / 100
+	max = math.Round(max*100) / 100
+	interval = math.Round(interval*100) / 100
 	return
 }
