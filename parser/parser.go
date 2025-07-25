@@ -118,6 +118,8 @@ func ParseIostatOutput(data []byte) (ParsedData, error) {
 				WritePctMerged:    devMap["wrqm"],
 				WriteAwaitMs:      devMap["w_await"],
 				WriteReqSzKB:      devMap["wareq-sz"],
+				// aqu-sz → queue length
+				QueueSize: devMap["aqu-sz"],
 			}
 			parsed.Devices[dev.Name] = append(parsed.Devices[dev.Name], dev)
 		}

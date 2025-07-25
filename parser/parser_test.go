@@ -91,6 +91,7 @@ sda              0.00      0.00     0.00   0.00    0.00     0.00  161.39    550.
 	assert.Len(t, recs, 1)
 	assert.Equal(t, 161.39, recs[0].WritesPerSec)
 	assert.Equal(t, 3.41, recs[0].WriteReqSzKB)
+	assert.InDelta(t, 0.06, recs[0].QueueSize, 1e-6)
 }
 
 func TestParseIostatFullSample(t *testing.T) {

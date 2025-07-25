@@ -30,6 +30,9 @@ type DeviceStats struct {
 	WritePctMerged    float64
 	WriteAwaitMs      float64
 	WriteReqSzKB      float64
+
+	// QueueSize is the average queue length (aqu-sz)
+	QueueSize float64
 }
 
 // ParsedData is the top‐level result of parsing iostat output.
