@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"html/template"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"github.com/rsvihladremio/iostat-reporter/parser"
@@ -114,6 +115,10 @@ func GenerateReport(parsedData parser.ParsedData, outputFile string, reportTitle
 	}
 
 	// Render the template
+	templatePath := "templates/report.html"
+	if _, statErr := os.Stat(templatePath); os.IsNotExist(statErr) {
+		templatePath = filepath.Join("..", "templates", "report.html")
+	}
 	tmpl, err := template.New("report.html").Funcs(template.FuncMap{
 		"safeJS": func(s string) template.JS { return template.JS(s) }, // #nosec G203
 		"abbr": func(s string) string {
@@ -122,9 +127,9 @@ func GenerateReport(parsedData parser.ParsedData, outputFile string, reportTitle
 			}
 			return s
 		},
-	}).ParseFiles("templates/report.html")
+	}).ParseFiles(templatePath)
 	if err != nil {
-		return fmt.Errorf("failed to parse template: %w", err)
+		return fmt.Errorf("failed to parse template %q: %w", templatePath, err)
 	}
 
 	data := struct {
