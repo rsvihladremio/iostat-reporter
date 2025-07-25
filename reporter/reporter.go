@@ -36,6 +36,7 @@ func GenerateReport(parsedData parser.ParsedData, outputFile string, reportTitle
 		"legend":  map[string]interface{}{"data": []string{"User", "System", "Idle", "IOWait", "Nice", "Steal"}, "bottom": 0},
 		"toolbox": map[string]interface{}{
 			"show": true,
+			"top": -7,
 			"feature": map[string]interface{}{
 				"saveAsImage": map[string]interface{}{},
 				"dataZoom":    map[string]interface{}{},
@@ -95,6 +96,7 @@ func GenerateReport(parsedData parser.ParsedData, outputFile string, reportTitle
 			},
 			"toolbox": map[string]interface{}{
 				"show": true,
+				"top": -7,
 				"feature": map[string]interface{}{
 					"saveAsImage": map[string]interface{}{},
 					"dataZoom":    map[string]interface{}{},
