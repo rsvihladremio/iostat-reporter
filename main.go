@@ -2,8 +2,8 @@ package main
 
 import (
 	"crypto/sha256"
-	"github.com/spf13/pflag"
 	"fmt"
+	"github.com/spf13/pflag"
 	"log"
 	"os"
 	"path/filepath"

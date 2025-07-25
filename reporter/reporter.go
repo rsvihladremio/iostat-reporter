@@ -34,8 +34,17 @@ func GenerateReport(parsedData parser.ParsedData, outputFile string, reportTitle
 	cpuOption := map[string]interface{}{
 		"tooltip": map[string]interface{}{"trigger": "axis"},
 		"legend":  map[string]interface{}{"data": []string{"User", "System", "Idle", "IOWait", "Nice", "Steal"}, "bottom": 0},
-		"xAxis":   map[string]interface{}{"type": "category", "data": times},
-		"yAxis":   map[string]interface{}{"type": "value", "name": "% CPU"},
+		"toolbox": map[string]interface{}{
+			"show": true,
+			"feature": map[string]interface{}{
+				"saveAsImage": map[string]interface{}{},
+				"dataZoom":    map[string]interface{}{},
+				"dataView":    map[string]interface{}{"readOnly": false},
+				"restore":     map[string]interface{}{},
+			},
+		},
+		"xAxis": map[string]interface{}{"type": "category", "data": times},
+		"yAxis": map[string]interface{}{"type": "value", "name": "% CPU"},
 		"series": []map[string]interface{}{
 			{"name": "User", "type": "line", "data": users},
 			{"name": "System", "type": "line", "data": systems},
@@ -83,6 +92,15 @@ func GenerateReport(parsedData parser.ParsedData, outputFile string, reportTitle
 			"legend": map[string]interface{}{
 				"data":   []string{"Read Req/s", "Write Req/s", "Read MB/s", "Write MB/s", "Read Latency (ms)", "Write Latency (ms)", "Queue Size"},
 				"bottom": 0,
+			},
+			"toolbox": map[string]interface{}{
+				"show": true,
+				"feature": map[string]interface{}{
+					"saveAsImage": map[string]interface{}{},
+					"dataZoom":    map[string]interface{}{},
+					"dataView":    map[string]interface{}{"readOnly": false},
+					"restore":     map[string]interface{}{},
+				},
 			},
 			"xAxis": map[string]interface{}{"type": "category", "data": times},
 			"yAxis": []map[string]interface{}{
