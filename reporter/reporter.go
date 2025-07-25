@@ -36,7 +36,7 @@ func GenerateReport(parsedData parser.ParsedData, outputFile string, reportTitle
 		"legend":  map[string]interface{}{"data": []string{"User", "System", "Idle", "IOWait", "Nice", "Steal"}, "bottom": 0},
 		"toolbox": map[string]interface{}{
 			"show": true,
-			"top": -7,
+			"top":  -7,
 			"feature": map[string]interface{}{
 				"saveAsImage": map[string]interface{}{},
 				"dataZoom":    map[string]interface{}{},
@@ -86,6 +86,12 @@ func GenerateReport(parsedData parser.ParsedData, outputFile string, reportTitle
 			latWrites[i] = ds.WriteAwaitMs
 			queueSizes[i] = ds.QueueSize
 		}
+		const numSplits = 5
+		// Compute min, max, and interval for each axis group with 5 splits
+		reqMin, reqMax, reqInterval := CalcScale(numSplits, reqReads, reqWrites)
+		kbMin, kbMax, kbInterval := CalcScale(numSplits, kbReads, kbWrites)
+		latMin, latMax, latInterval := CalcScale(numSplits, latReads, latWrites)
+		qMin, qMax, qInterval := CalcScale(numSplits, queueSizes)
 		chartID := "dev_" + strings.ReplaceAll(dev, "-", "_") + "_chart"
 		option := map[string]interface{}{
 			"grid":    map[string]interface{}{"containLabel": true},
@@ -96,7 +102,7 @@ func GenerateReport(parsedData parser.ParsedData, outputFile string, reportTitle
 			},
 			"toolbox": map[string]interface{}{
 				"show": true,
-				"top": -7,
+				"top":  -7,
 				"feature": map[string]interface{}{
 					"saveAsImage": map[string]interface{}{},
 					"dataZoom":    map[string]interface{}{},
@@ -106,10 +112,49 @@ func GenerateReport(parsedData parser.ParsedData, outputFile string, reportTitle
 			},
 			"xAxis": map[string]interface{}{"type": "category", "data": times},
 			"yAxis": []map[string]interface{}{
-				{"type": "value", "name": "Req/s", "position": "left", "axisLabel": map[string]interface{}{"formatter": "{value} req/s"}},
-				{"type": "value", "name": "MB/s", "position": "left", "offset": 80, "axisLabel": map[string]interface{}{"formatter": "{value} MB/s"}},
-				{"type": "value", "name": "ms", "position": "right", "offset": 40, "axisLabel": map[string]interface{}{"formatter": "{value} ms"}},
-				{"type": "value", "name": "Queue Size", "position": "right", "offset": 120, "axisLabel": map[string]interface{}{"formatter": "{value}"}},
+				{
+					"type":      "value",
+					"name":      "Req/s",
+					"position":  "left",
+					"min":       reqMin,
+					"max":       reqMax,
+					"interval":  reqInterval,
+					"splitLine": map[string]interface{}{"show": true},
+					"axisLabel": map[string]interface{}{"formatter": "{value} req/s"},
+				},
+				{
+					"type":      "value",
+					"name":      "MB/s",
+					"position":  "left",
+					"offset":    80,
+					"min":       kbMin,
+					"max":       kbMax,
+					"interval":  kbInterval,
+					"splitLine": map[string]interface{}{"show": true},
+					"axisLabel": map[string]interface{}{"formatter": "{value} MB/s"},
+				},
+				{
+					"type":      "value",
+					"name":      "ms",
+					"position":  "right",
+					"offset":    40,
+					"min":       latMin,
+					"max":       latMax,
+					"interval":  latInterval,
+					"splitLine": map[string]interface{}{"show": true},
+					"axisLabel": map[string]interface{}{"formatter": "{value} ms"},
+				},
+				{
+					"type":      "value",
+					"name":      "Queue Size",
+					"position":  "right",
+					"offset":    120,
+					"min":       qMin,
+					"max":       qMax,
+					"interval":  qInterval,
+					"splitLine": map[string]interface{}{"show": true},
+					"axisLabel": map[string]interface{}{"formatter": "{value}"},
+				},
 			},
 			"series": []map[string]interface{}{
 				{"name": "Read Req/s", "type": "line", "data": reqReads, "yAxisIndex": 0},
