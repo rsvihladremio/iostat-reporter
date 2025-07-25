@@ -2,7 +2,7 @@ package main
 
 import (
 	"crypto/sha256"
-	"flag"
+	"github.com/spf13/pflag"
 	"fmt"
 	"log"
 	"os"
@@ -21,12 +21,12 @@ var (
 )
 
 func init() {
-	flag.StringVar(&outputFile, "o", "iostat.html", "Output HTML file path")
-	flag.StringVar(&reportTitle, "n", "Iostat Report", "Report title")
-	flag.StringVar(&metadata, "m", "", "Additional metadata as JSON string")
-	showVersion := flag.Bool("version", false, "show version and exit")
+	pflag.StringVarP(&outputFile, "output", "o", "iostat.html", "Output HTML file path")
+	pflag.StringVarP(&reportTitle, "name", "n", "Iostat Report", "Report title")
+	pflag.StringVarP(&metadata, "metadata", "m", "", "Additional metadata as JSON string")
+	showVersion := pflag.Bool("version", false, "show version and exit")
 
-	flag.Parse()
+	pflag.Parse()
 
 	if *showVersion {
 		fmt.Println(Version)
@@ -37,7 +37,7 @@ func init() {
 func main() {
 
 	// Validate input file
-	args := flag.Args()
+	args := pflag.Args()
 	if len(args) < 1 {
 		log.Fatal("Please provide an input file")
 	}
