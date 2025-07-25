@@ -1,0 +1,16 @@
+project_name: iostat-reporter
+
+builds:
+  - id: threaded-top-reporter
+    main: ./main.go
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -X main.Version={{.Version}}
