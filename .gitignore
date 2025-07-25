@@ -1,0 +1,36 @@
+# Binaries
+/iostat-reporter
+
+# Development environment
+/.vscode/
+/.idea/
+
+# Dependency directories
+/vendor/
+/bin/
+
+# Test output
+/coverage.txt
+/profile.out
+
+# Go workspace file
+go.work
+
+go.work.sum
+
+# env file
+.env
+
+# Editor/IDE
+.idea/
+.vscode/
+
+### BROKK'S CONFIGURATION ###
+.brokk/**
+/.brokk/workspace.properties
+/.brokk/sessions/
+/.brokk/dependencies/
+/.brokk/history.zip
+!.brokk/style.md
+!.brokk/review.md
+!.brokk/project.properties
